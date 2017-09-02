@@ -122,6 +122,30 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FB5E672F1F5B59E80050F5F3 /* App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				FBADD5EC1F5A15CA00692ED1 /* AppDelegate.swift */,
+			);
+			name = "App Delegate";
+			sourceTree = "<group>";
+		};
+		FB5E67301F5B5A0E0050F5F3 /* Supporting FIles */ = {
+			isa = PBXGroup;
+			children = (
+				FBADD5F81F5A15CA00692ED1 /* Info.plist */,
+			);
+			name = "Supporting FIles";
+			sourceTree = "<group>";
+		};
+		FB5E67311F5B5A4E0050F5F3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FBADD5F31F5A15CA00692ED1 /* Assets.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		FBADD5E01F5A15CA00692ED1 = {
 			isa = PBXGroup;
 			children = (
@@ -147,12 +171,12 @@
 		FBADD5EB1F5A15CA00692ED1 /* Pokemon */ = {
 			isa = PBXGroup;
 			children = (
+				FB5E672F1F5B59E80050F5F3 /* App Delegate */,
+				FB5E67311F5B5A4E0050F5F3 /* Resources */,
+				FB5E67301F5B5A0E0050F5F3 /* Supporting FIles */,
 				FBADD61A1F5A182F00692ED1 /* Model */,
 				FBADD61B1F5A183500692ED1 /* View */,
 				FBADD61C1F5A183B00692ED1 /* Controller */,
-				FBADD5EC1F5A15CA00692ED1 /* AppDelegate.swift */,
-				FBADD5F31F5A15CA00692ED1 /* Assets.xcassets */,
-				FBADD5F81F5A15CA00692ED1 /* Info.plist */,
 			);
 			path = Pokemon;
 			sourceTree = "<group>";
