@@ -15,6 +15,7 @@ class pokemonDetailsVC: UIViewController {
     
     @IBOutlet weak var weightValue: UILabel!
     @IBOutlet weak var heightValue: UILabel!
+    @IBOutlet weak var pokemonImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,11 +43,11 @@ class pokemonDetailsVC: UIViewController {
     }
     
     func updateDetails () {
-        print("in here")
         weightValue.text = "\(pokemodDetails.weight!)"
         heightValue.text = "\(pokemodDetails.height!)"
-        print(self.pokemodDetails.name!)
-        print(self.pokemodDetails.height!)
+        pokemodDetails.downloadImage{image in
+            self.pokemonImage.image = image
+        }
     }
 
     /*

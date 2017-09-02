@@ -61,15 +61,18 @@ class PokemonDetails {
         
     }
     
-    func downloadImage() {
-        if let thumbnailURL = imageURL {
-            let networkService = NetworkService(url: thumbnailURL)
-            networkService.downloadImage({ (imageData) in
-                let image = UIImage(data: imageData as Data)
-                DispatchQueue.main.async(execute: {
-                    self.thumbnailImageView.image = image
-                })
-            })
+    typealias ImageDataHandler = (UIImage) -> ()
+    
+    func downloadImage(completed: @escaping ImageDataHandler) {
+        Alamofire.request(self.imageURL!).responseImage { response in
+            debugPrint(response)
+        
+            debugPrint(response.result)
+            
+            if let image = response.result.value {
+                print("image downloaded: \(image)")
+                completed(image)
+            }
         }
     }
     
