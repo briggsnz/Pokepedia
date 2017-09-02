@@ -9,11 +9,14 @@
 import UIKit
 import Alamofire
 
-class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    let array = ["one", "two", "three", "four", "five", "six"]
+    var inSearchMode = false
+    
     var pokemonGroup = [Pokemon]()
+    var filterPokemonGroup = [Pokemon]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,21 +34,46 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemonGroup.count
+        if inSearchMode {
+            return filterPokemonGroup.count
+        } else {
+            return pokemonGroup.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath)//UITableViewCell()
-        cell.textLabel?.text = pokemonGroup[indexPath.row].name
+        if inSearchMode {
+            cell.textLabel?.text = filterPokemonGroup[indexPath.row].name?.capitalized
+        } else {
+            cell.textLabel?.text = pokemonGroup[indexPath.row].name?.capitalized
+        }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected")
-        print(pokemonGroup[indexPath.row].name!)
-        print(pokemonGroup[indexPath.row].url!)
+
         
         performSegue(withIdentifier: "showPokemonDetailsSegue", sender: nil)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == nil || searchBar.text == "" {
+            
+            inSearchMode = false
+            tableView.reloadData()
+            view.endEditing(true)
+            
+        } else {
+            
+            inSearchMode = true
+            
+            let lower = searchBar.text!.lowercased()
+            
+            filterPokemonGroup = pokemonGroup.filter({$0.name?.range(of: lower) != nil})
+            tableView.reloadData()
+            
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

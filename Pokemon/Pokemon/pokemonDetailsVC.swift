@@ -22,7 +22,7 @@ class pokemonDetailsVC: UIViewController {
        // print(pokemon?.name)
         
         if let name = pokemon?.name {
-            self.title = name
+            self.title = name.capitalized
         }
         
         if let url = pokemon?.url {

@@ -21,7 +21,7 @@ class Pokemon {
     }
     
     init(pokemonDictionary: [String:Any]) {
-        self.name = (pokemonDictionary["name"] as? String)?.capitalized
+        self.name = pokemonDictionary["name"] as? String
         self.url = pokemonDictionary["url"] as? String
     }
     
