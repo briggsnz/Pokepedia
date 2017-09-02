@@ -10,9 +10,29 @@ import UIKit
 
 class pokemonDetailsVC: UIViewController {
 
+    var pokemon: Pokemon?
+    var pokemodDetails: PokemonDetails!
+    
+    @IBOutlet weak var weightValue: UILabel!
+    @IBOutlet weak var heightValue: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+       // print(pokemon?.name)
+        
+        if let name = pokemon?.name {
+            self.title = name
+        }
+        
+        if let url = pokemon?.url {
+             pokemodDetails = PokemonDetails(dataURL: url)
+            pokemodDetails.downloadPokemonDetails {_ in 
+               // self.updateMainUI()
+                self.updateDetails()
+           
+            }
+        }
+       
         // Do any additional setup after loading the view.
     }
 
@@ -21,6 +41,13 @@ class pokemonDetailsVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func updateDetails () {
+        print("in here")
+        weightValue.text = "\(pokemodDetails.weight!)"
+        heightValue.text = "\(pokemodDetails.height!)"
+        print(self.pokemodDetails.name!)
+        print(self.pokemodDetails.height!)
+    }
 
     /*
     // MARK: - Navigation

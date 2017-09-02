@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Choose Pokemon-->
+        <!--Pokemon-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="mainTableviewVC" customModule="Pokemon" customModuleProvider="target" sceneMemberID="viewController">
@@ -36,6 +36,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="MV5-qG-VJH"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="xTL-j5-ZMp"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -47,11 +48,71 @@
                             <constraint firstAttribute="trailing" secondItem="tWh-0z-E2i" secondAttribute="trailing" id="wFB-jT-R7Q"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Choose Pokemon" id="PA7-Mc-qaH"/>
+                    <navigationItem key="navigationItem" title="Pokemon" id="PA7-Mc-qaH"/>
+                    <connections>
+                        <outlet property="tableView" destination="tWh-0z-E2i" id="zeE-Z8-dpf"/>
+                        <segue destination="iTh-fU-dmd" kind="show" identifier="showPokemonDetailsSegue" id="Na8-VR-Ypi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1076" y="138.98050974512745"/>
+        </scene>
+        <!--Pokemon DetailsVC-->
+        <scene sceneID="HlO-UT-wwe">
+            <objects>
+                <viewController id="iTh-fU-dmd" customClass="pokemonDetailsVC" customModule="Pokemon" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yWm-Cx-uak"/>
+                        <viewControllerLayoutGuide type="bottom" id="6Kf-ZV-JGE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VFg-rz-Eme">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pokeBall" translatesAutoresizingMaskIntoConstraints="NO" id="JGC-c1-k6E">
+                                <rect key="frame" x="123" y="94" width="128" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Weight:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Esv-Jh-cac">
+                                <rect key="frame" x="109" y="247" width="86" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4oP-mP-dgF" userLabel="weightValue">
+                                <rect key="frame" x="198" y="247" width="67" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Height:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PpN-Ud-FRw">
+                                <rect key="frame" x="109" y="286" width="86" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GUp-K2-XGI" userLabel="heightValue">
+                                <rect key="frame" x="198" y="286" width="67" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="heightValue" destination="GUp-K2-XGI" id="Haj-ih-b6d"/>
+                        <outlet property="weightValue" destination="4oP-mP-dgF" id="pLJ-4P-dIJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uT5-Q9-ymB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1968.8" y="138.98050974512745"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9Cr-qi-KQG">
@@ -72,4 +133,7 @@
             <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pokeBall" width="192" height="192"/>
+    </resources>
 </document>
