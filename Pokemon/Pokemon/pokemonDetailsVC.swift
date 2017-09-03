@@ -26,8 +26,8 @@ class pokemonDetailsVC: UIViewController {
         }
         
         if let url = pokemon?.url {
-             pokemodDetails = PokemonDetails(dataURL: url)
-            pokemodDetails.downloadPokemonDetails {_ in 
+            pokemodDetails = PokemonDetails()
+            pokemodDetails.downloadPokemonDetails (dataURL: url) {_ in
                // self.updateMainUI()
                 self.updateDetails()
            

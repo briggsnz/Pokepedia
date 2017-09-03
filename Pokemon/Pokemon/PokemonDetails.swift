@@ -7,10 +7,11 @@
 //
 
 import Foundation
-import Alamofire
-import AlamofireImage
-typealias DetailsDownloadComplete = () -> ()
 
+//  HTTP networking library written in Swift - https://github.com/Alamofire/Alamofire
+import Alamofire
+// An image component library for Alamofire - https://github.com/Alamofire/AlamofireImage
+import AlamofireImage
 
 class PokemonDetails {
     var name:String?
@@ -19,58 +20,30 @@ class PokemonDetails {
     var imageURL: String?
     let dataURL: String?
     
-    init(dataURL: String) {
-        self.dataURL = dataURL
+    init() {
+        self.dataURL = ""
         self.name = ""
         self.weight = 0
         self.height = 0
         self.imageURL = ""
     }
     
-    func downloadPokemonDetails(completed: @escaping DetailsDownloadComplete){
-        let detailsURL = URL(string: dataURL!)!
+    func downloadPokemonDetails(dataURL: String, completed: @escaping () -> ()){
+        let detailsURL = URL(string: dataURL)!
+        let decodeJson = DecodeJson()
+        
         Alamofire.request(detailsURL).responseJSON{ response in
-            let result = response.result
-            print(result)
-            //print(response)
-            if let dict = result.value as? Dictionary<String, AnyObject> {
-                print(dict)
-            
-                if let name = dict["name"] as? String {
-                    self.name = name.capitalized
-                    print(self.name!)
-                }
-                if let height = dict["height"] as? Int {
-                    self.height = height
-                    print(self.height!)
-                }
-                if let weight = dict["weight"] as? Int {
-                    self.weight = weight
-                    print(self.weight!)
-                }
-                
-                if let sprites = dict["sprites"] as? Dictionary<String, AnyObject> {
-                    if let image = sprites["front_shiny"] as? String {
-                        self.imageURL = image
-                    }
-                }
-
+            if let value = response.result.value {
+                decodeJson.decodePokemonDetails(list: value, pokemonDetails: self)
             }
            completed()
         }
         
     }
     
-    typealias ImageDataHandler = (UIImage) -> ()
-    
-    func downloadImage(completed: @escaping ImageDataHandler) {
+    func downloadImage(completed: @escaping (UIImage) -> ()) {
         Alamofire.request(self.imageURL!).responseImage { response in
-            debugPrint(response)
-        
-            debugPrint(response.result)
-            
             if let image = response.result.value {
-                print("image downloaded: \(image)")
                 completed(image)
             }
         }
