@@ -17,17 +17,7 @@ class pokemonDetailsVC: UIViewController {
     @IBOutlet weak var weightValue: UILabel!
     @IBOutlet weak var heightValue: UILabel!
     @IBOutlet weak var pokemonImage: UIImageView!
-    
-    /// Display an alert explaining that data cannot be found and segue back
-    func createAlert(){
-        let alert = UIAlertController(title: "Error connecting to server", message: "Failed to find details about selected Pokemon", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {(action:UIAlertAction!) in
-            _ = self.navigationController?.popViewController(animated: true)
-        }))
-        self.present(alert, animated: false, completion: nil)
-    }
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
       
@@ -47,7 +37,9 @@ class pokemonDetailsVC: UIViewController {
                 self.pokemonDetails = newPokemonDetails
                 self.updateDetails()
             }, fail: {error in
-                self.createAlert()
+                // Display an alert explaining that data cannot be found and segue back
+                Helper.showAlert(VC: self ,title: "Error connecting to server", message: "Unable to find details of Pokemon", callBack: {(action:UIAlertAction!) in
+                        _ = self.navigationController?.popViewController(animated: true)})
             })
         }
     }

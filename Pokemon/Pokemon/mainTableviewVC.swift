@@ -17,15 +17,7 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     var inSearchMode = false
     var pokemonGroup : [Pokemon]!
     var filterPokemonGroup : [Pokemon]!
-    
-    /// Display an alert explaining that local values are being used
-    func createAlert(){
-        let alertController = UIAlertController(title: "Error connecting to server", message:
-            "Loading stored pokemon", preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
+
     override func viewDidLoad() {
         // Do any additional setup after loading the view, typically from a nib.
         
@@ -47,7 +39,9 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             Pokemon.useLocalData(bundle: bundle, success: {newPokemonGroup in
                 self.pokemonGroup = newPokemonGroup
                 self.tableView.reloadData()
-                self.createAlert()
+                
+                // Display an alert explaining that local values are being used
+                Helper.showAlert(VC: self ,title: "Error connecting to server", message: "Loading stored pokemon")
             }, fail: {error in // local data error
                 print("call failed with error: \(error.localizedDescription)")
             })

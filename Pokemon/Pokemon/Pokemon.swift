@@ -32,7 +32,7 @@ class Pokemon {
     ///   - downloadURL: URL to of where to connect, used to override for testing
     ///   - success: callback for successful download
     ///   - fail: callback for failed download
-    static func downloadPokemonData (downloadURL:String? = "http://pokeapi.co/api/v2/pokemon/?limit=30&offset=1", success: @escaping ([Pokemon]) -> (), fail: @escaping (NSError) -> ()) -> Void {
+    static func downloadPokemonData (downloadURL:String? = "http://podkeapi.co/api/v2/pokemon/?limit=30&offset=1", success: @escaping ([Pokemon]) -> (), fail: @escaping (NSError) -> ()) -> Void {
         var pokemonGroup = [Pokemon]()
         let decodeJson = DecodeJson()
 
