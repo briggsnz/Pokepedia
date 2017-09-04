@@ -11,62 +11,71 @@ import Foundation
 //  HTTP networking library written in Swift - https://github.com/Alamofire/Alamofire
 import Alamofire
 
+/// Pokemon class
+///
 class Pokemon {
     let name : String?
     let url : String?
     
-    /// Basic initializer
-    ///
-    /// - Parameters:
-    ///   - name: name of pokemon
-    ///   - url: url of details for pokemon
-    init(name: String, url: String) {
-        self.name = name
-        self.url = url
-    }
-    
     /// Convenience initializer
     ///
     /// - Parameter pokemonDictionary: dictionary containing 'name' and 'url' (see above)
-    init(pokemonDictionary: [String:Any]) {
+    init(pokemonDictionary: [String:Any])  {
         self.name = pokemonDictionary["name"] as? String
         self.url = pokemonDictionary["url"] as? String
     }
+
     
     /// Download Pokemon data from URL
     ///
-    /// - Parameter completed: Closure to be completed when function has finished running
-    ///     - Passes back list of downloaded 'Pokemon'
-    static func downloadPokemonData (completed: @escaping ([Pokemon]) -> ()) -> Void {
+    /// - Parameters:
+    ///   - downloadURL: URL to of where to connect, used to override for testing
+    ///   - success: callback for successful download
+    ///   - fail: callback for failed download
+    static func downloadPokemonData (downloadURL:String? = "http://pokeapi.co/api/v2/pokemon/?limit=30&offset=1", success: @escaping ([Pokemon]) -> (), fail: @escaping (NSError) -> ()) -> Void {
         var pokemonGroup = [Pokemon]()
         let decodeJson = DecodeJson()
-        
-        let downloadURL = URL(string: "http://pokeapi.co/api/v2/pokemon/?limit=30&offset=1")
+
         Alamofire.request(downloadURL!).responseJSON { response in
-            if let value = response.result.value {
-                pokemonGroup = decodeJson.decodeList(list: value)
+            switch response.result{
+            case .success:
+                if let value = response.result.value {
+                    pokemonGroup = decodeJson.decodeList(list: value)
+                }
+                success(pokemonGroup)
+                break
+            case .failure(let error as NSError):
+                fail(error)
+                break
+            default:
+                print("I have an unexpected case.")
             }
-            completed(pokemonGroup)
         }
     }
     
-    static func useLocalData(bundle: Bundle, completed: @escaping ([Pokemon]) -> ()) {
+    /// Usle local data instead
+    ///
+    /// - Parameters:
+    ///   - bundle: Where to find local data (used for testing)
+    ///   - fileName: Where to find local data (used for testing)
+    ///   - success: callback for successful download
+    ///   - fail: callback for failed download
+    static func useLocalData(bundle: Bundle, fileName: String = "pokemonList", success: @escaping ([Pokemon]) -> (), fail: @escaping (NSError) -> ()) {
         var pokemonGroup = [Pokemon]()
         let decodeJson = DecodeJson()
         
         //let bundle = Bundle(for: Pokemon.self)
-        let jsonFile = bundle.path(forResource: "pokemonList", ofType: "json")
+        let jsonFile = bundle.path(forResource: fileName, ofType: "json")
         let jsonFileURL = URL(fileURLWithPath: jsonFile!)
         let jsonData = try? Data(contentsOf: jsonFileURL)
         
         if let data = jsonData {
             do {
                 let jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : AnyObject]
-                //print( jsonDictionary)
                 pokemonGroup = decodeJson.decodeList(list: jsonDictionary!)
-                completed(pokemonGroup)
+                success(pokemonGroup)
             } catch let error as NSError {
-                print("error processing json data: \(error.localizedDescription)")
+                fail(error)
             }
         }
     }

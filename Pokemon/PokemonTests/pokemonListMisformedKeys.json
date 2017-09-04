@@ -7,12 +7,12 @@
          "name":"ivysaur"
       },
       {
-         "url":"http:\/\/pokeapi.co\/api\/v2\/pokemon\/3\/",
+         "urls":"http:\/\/pokeapi.co\/api\/v2\/pokemon\/3\/",
          "name":"venusaur"
       },
       {
          "url":"http:\/\/pokeapi.co\/api\/v2\/pokemon\/4\/",
-         "name":"charmander"
+         "named":"charmander"
       },
       {
          "url":"http:\/\/pokeapi.co\/api\/v2\/pokemon\/5\/",

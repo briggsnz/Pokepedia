@@ -18,14 +18,36 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     var pokemonGroup = [Pokemon]()
     var filterPokemonGroup = [Pokemon]()
     
+    /// Display an alert explaining that local values are being used
+    func createAlert(){
+        let alertController = UIAlertController(title: "Error connecting to server", message:
+            "Loading stored pokemon", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        Pokemon.downloadPokemonData{newPokemonGroup in
+        // Download from server, if server is unavailable for some reason then use local files
+        
+        Pokemon.downloadPokemonData(success: {newPokemonGroup in // successfully downloaded content
+            print("---- Loaded from server correctly")
             self.pokemonGroup = newPokemonGroup
             self.tableView.reloadData()
-        }
-
+        }, fail: {error in // error downloading so load local file
+            print("call failed with error: \(error.localizedDescription)")
+            let bundle = Bundle(for: Pokemon.self)
+            Pokemon.useLocalData(bundle: bundle, success: {newPokemonGroup in
+                self.pokemonGroup = newPokemonGroup
+                self.tableView.reloadData()
+                self.createAlert()
+            }, fail: {error in // local data error
+                print("call failed with error: \(error.localizedDescription)")
+            })
+            
+        })
     }
 
     override func didReceiveMemoryWarning() {

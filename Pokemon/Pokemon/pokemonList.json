@@ -3,7 +3,7 @@
    "previous":"http:\/\/pokeapi.co\/api\/v2\/pokemon\/?limit=30",
    "results":[
       {
-         "url":"http:\/\/pokeapi.co\/api\/v2\/pokemon\/2\/",
+         "url":"http:\/\/pokseapi.co\/api\/v2\/pokemon\/2\/",
          "name":"ivysaur"
       },
       {

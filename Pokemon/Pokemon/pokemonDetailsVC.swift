@@ -11,11 +11,20 @@ import UIKit
 class pokemonDetailsVC: UIViewController {
 
     var pokemon: Pokemon?
-    var pokemodDetails: PokemonDetails!
+    var pokemonDetails: PokemonDetails!
     
     @IBOutlet weak var weightValue: UILabel!
     @IBOutlet weak var heightValue: UILabel!
     @IBOutlet weak var pokemonImage: UIImageView!
+    
+    func createAlert(){
+        let alert = UIAlertController(title: "Error connecting to server", message: "Failed to find details about selected Pokemon", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {(action:UIAlertAction!) in
+            _ = self.navigationController?.popViewController(animated: true)
+        }))
+        self.present(alert, animated: false, completion: nil)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +35,14 @@ class pokemonDetailsVC: UIViewController {
         }
         
         if let url = pokemon?.url {
-            pokemodDetails = PokemonDetails()
-            pokemodDetails.downloadPokemonDetails (dataURL: url) {_ in
-               // self.updateMainUI()
+            print(url)
+            pokemonDetails = PokemonDetails()
+            PokemonDetails.downloadPokemonDetails (dataURLPass: url, success: {newPokemonDetails in
+                self.pokemonDetails = newPokemonDetails
                 self.updateDetails()
-           
-            }
+            }, fail: {error in
+                self.createAlert()
+            })
         }
        
         // Do any additional setup after loading the view.
@@ -43,11 +54,11 @@ class pokemonDetailsVC: UIViewController {
     }
     
     func updateDetails () {
-        weightValue.text = "\(pokemodDetails.weight!)"
-        heightValue.text = "\(pokemodDetails.height!)"
-        pokemodDetails.downloadImage{image in
+        weightValue.text = "\(pokemonDetails.weight!)"
+        heightValue.text = "\(pokemonDetails.height!)"
+        PokemonDetails.downloadImage(imageURL: pokemonDetails.imageURL!, success: {image in
             self.pokemonImage.image = image
-        }
+        }, fail: {})
     }
 
     /*

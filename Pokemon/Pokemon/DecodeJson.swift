@@ -18,8 +18,16 @@ class DecodeJson {
         if let dict = list as? Dictionary<String, AnyObject> {
             if let pokemon = dict["results"] as? [Dictionary<String, AnyObject>] {
                 for poke in pokemon {
-                    let newPokemon =  Pokemon(pokemonDictionary: poke)
-                    pokemonGroup.append(newPokemon)
+                    do {
+                        guard let _ = poke["name"] as? String,
+                            let _ = poke["url"] as? String else {
+                                // throw("Mismatch" as NSError)
+                                continue
+                        }
+                        let newPokemon = Pokemon(pokemonDictionary: poke)
+                        pokemonGroup.append(newPokemon)
+                    }
+                    
                 }
             }
         }
@@ -32,22 +40,23 @@ class DecodeJson {
     /// - Parameters:
     ///   - list: Raw Json Data
     ///   - pokemonDetails: instance of PokemonDetails to be mutated
-    func decodePokemonDetails (list: Any, pokemonDetails: PokemonDetails) -> () {
+    func decodePokemonDetails (list: Any) -> (PokemonDetails?) {
+        let pokemonDetails = PokemonDetails()
         if let dict = list as? Dictionary<String, AnyObject> {
-            if let name = dict["name"] as? String {
-                pokemonDetails.name = name.capitalized
+            guard let name = dict["name"] as? String,
+                let height = dict["height"] as? Int,
+                let weight = dict["weight"] as? Int,
+                let sprites = dict["sprites"] as? Dictionary<String, AnyObject>,
+                let image = sprites["front_shiny"] as? String else {
+                    return nil
             }
-            if let height = dict["height"] as? Int {
-                pokemonDetails.height = height
-            }
-            if let weight = dict["weight"] as? Int {
-                pokemonDetails.weight = weight
-            }
-            if let sprites = dict["sprites"] as? Dictionary<String, AnyObject> {
-                if let image = sprites["front_shiny"] as? String {
-                    pokemonDetails.imageURL = image
-                }
-            }
+            
+            pokemonDetails.name = name.capitalized
+            pokemonDetails.height = height
+            pokemonDetails.weight = weight
+            pokemonDetails.imageURL = image
+            
         }
+        return pokemonDetails
     }
 }
