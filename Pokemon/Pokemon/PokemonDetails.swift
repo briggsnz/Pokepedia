@@ -30,23 +30,24 @@ class PokemonDetails {
     ///   - fail: callback for failed download
     static func downloadPokemonDetails(dataURLPass: String, success: @escaping (PokemonDetails) -> (), fail: @escaping (NSError?) -> ())  -> Void{
         let decodeJson = DecodeJson()
+        
+        // use Alamofire to download data
         Alamofire.request(dataURLPass).responseJSON { response in
             switch response.result{
+                
+            // if successful decode and success callBack, else fail callBack
             case .success:
                 if let value = response.result.value {
-                    //print(value)
                     if let pokemonDetails = decodeJson.decodePokemonDetails(list: value) {
                         success(pokemonDetails)
                     } else {
                         fail(nil)
                     }
-                    break
                 }
             case .failure(let error as NSError):
                 fail(error)
-                break
             default:
-                print("I have an unexpected case.")
+                break
             }
         }
     }
@@ -59,21 +60,19 @@ class PokemonDetails {
     ///   - success: callback for successful download
     ///   - fail: callback for failed download
     static func downloadImage(imageURL: String, success: @escaping (UIImage) -> (), fail: @escaping () -> ()) {
-        print(imageURL)
+
+        // use Alamofire to download data
         Alamofire.request(imageURL).responseImage { response in
             switch response.result{
             case .success:
                 if let image = response.result.value {
                     success(image)
                 }
-                break
             case .failure(_ as NSError):
                 fail()
-                break
             default:
-                print("I have an unexpected case.")
+                break
             }
         }
     }
-    
 }

@@ -13,8 +13,8 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    var inSearchMode = false
     
+    var inSearchMode = false
     var pokemonGroup : [Pokemon]!
     var filterPokemonGroup : [Pokemon]!
     

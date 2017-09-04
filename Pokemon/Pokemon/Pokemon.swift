@@ -17,7 +17,7 @@ class Pokemon {
     let name : String?
     let url : String?
     
-    /// Convenience initializer
+    ///  Initializer
     ///
     /// - Parameter pokemonDictionary: dictionary containing 'name' and 'url' (see above)
     init(pokemonDictionary: [String:Any])  {
@@ -36,19 +36,22 @@ class Pokemon {
         var pokemonGroup = [Pokemon]()
         let decodeJson = DecodeJson()
 
+        // use Alamofire to download data
         Alamofire.request(downloadURL!).responseJSON { response in
             switch response.result{
+                
+            // successful then decode and call success callBacK
             case .success:
                 if let value = response.result.value {
                     pokemonGroup = decodeJson.decodeList(list: value)
                 }
                 success(pokemonGroup)
-                break
+                
+            // successful then decode and call fail callBack
             case .failure(let error as NSError):
                 fail(error)
-                break
             default:
-                print("I have an unexpected case.")
+                break
             }
         }
     }
@@ -64,11 +67,12 @@ class Pokemon {
         var pokemonGroup = [Pokemon]()
         let decodeJson = DecodeJson()
         
-        //let bundle = Bundle(for: Pokemon.self)
+        // location and details of local file
         let jsonFile = bundle.path(forResource: fileName, ofType: "json")
         let jsonFileURL = URL(fileURLWithPath: jsonFile!)
         let jsonData = try? Data(contentsOf: jsonFileURL)
         
+        // if data try to decode
         if let data = jsonData {
             do {
                 let jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : AnyObject]
