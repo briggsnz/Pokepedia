@@ -53,7 +53,7 @@ class Pokemon {
         }
     }
     
-    /// Usle local data instead
+    /// Use local data instead
     ///
     /// - Parameters:
     ///   - bundle: Where to find local data (used for testing)

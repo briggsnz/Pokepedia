@@ -13,6 +13,7 @@ class pokemonDetailsVC: UIViewController {
     var pokemon: Pokemon?
     var pokemonDetails: PokemonDetails!
     
+    @IBOutlet weak var pokemonName: UILabel!
     @IBOutlet weak var weightValue: UILabel!
     @IBOutlet weak var heightValue: UILabel!
     @IBOutlet weak var pokemonImage: UIImageView!
@@ -28,10 +29,14 @@ class pokemonDetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // print(pokemon?.name)
+      
+        self.navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "Pokemon Solid", size: 28)!, NSForegroundColorAttributeName: UIColor.orange]
+       
+        
         
         if let name = pokemon?.name {
-            self.title = name.capitalized
+            pokemonName.text = name.capitalized
+            self.title = "Pokepedia"
         }
         
         if let url = pokemon?.url {
