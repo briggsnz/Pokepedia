@@ -23,6 +23,13 @@ class testPokemonList: XCTestCase {
         super.tearDown()
     }
     
+    /// Check that Pokemon is initialized correctly
+    func testPokomonInit (){
+        let pokemonDictionary: [String:Any] = ["name": "sandslash", "url": "http://pokeapi.co/"]
+        let pokemon = Pokemon.init(pokemonDictionary: pokemonDictionary)
+        XCTAssertEqual(pokemon.name, "sandslash")
+        XCTAssertEqual(pokemon.url, "http://pokeapi.co/")
+    }
     
     /// Checks that the correct number of Pokemon are returned - 30
     func testCheckCount (){

@@ -39,16 +39,6 @@
                ReferencedContainer = "container:Pokemon.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FBADD6071F5A15CA00692ED1"
-               BuildableName = "PokemonUITests.xctest"
-               BlueprintName = "PokemonUITests"
-               ReferencedContainer = "container:Pokemon.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

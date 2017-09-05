@@ -21,6 +21,7 @@ class Pokemon {
     ///
     /// - Parameter pokemonDictionary: dictionary containing 'name' and 'url' (see above)
     init(pokemonDictionary: [String:Any])  {
+        print(pokemonDictionary)
         self.name = pokemonDictionary["name"] as? String
         self.url = pokemonDictionary["url"] as? String
     }
@@ -32,21 +33,18 @@ class Pokemon {
     ///   - downloadURL: URL to of where to connect, used to override for testing
     ///   - success: callback for successful download
     ///   - fail: callback for failed download
-    static func downloadPokemonData (downloadURL:String? = "http://pokeapi.co/api/v2/pokemon/?limit=30&offset=1", success: @escaping ([Pokemon]) -> (), fail: @escaping (NSError) -> ()) -> Void {
+    static func downloadPokemonData (downloadURL:String? = "http://pokeapi.co/api/v2/pokemon/?limit=30&offset=1", success: @escaping ([Pokemon]) -> (), fail: @escaping (NSError?) -> ()) -> Void {
         var pokemonGroup = [Pokemon]()
         let decodeJson = DecodeJson()
 
         // use Alamofire to download data
         Alamofire.request(downloadURL!).validate().responseJSON { response in
             switch response.result{
-                
             // successful then decode and call success callBacK
             case .success:
-                if let value = response.result.value {
-                    pokemonGroup = decodeJson.decodeList(list: value)
-                }
+                guard let value = response.result.value else { fail(nil); return }
+                pokemonGroup = decodeJson.decodeList(list: value)
                 success(pokemonGroup)
-                
             // successful then decode and call fail callBack
             case .failure(let error as NSError):
                 fail(error)

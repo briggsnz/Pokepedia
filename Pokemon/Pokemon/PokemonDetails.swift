@@ -37,12 +37,11 @@ class PokemonDetails {
                 
             // if successful decode and success callBack, else fail callBack
             case .success:
-                if let value = response.result.value {
-                    if let pokemonDetails = decodeJson.decodePokemonDetails(list: value) {
-                        success(pokemonDetails)
-                    } else {
-                        fail(nil)
-                    }
+                guard let value = response.result.value else { fail(nil); return }
+                if let pokemonDetails = decodeJson.decodePokemonDetails(list: value) {
+                    success(pokemonDetails)
+                } else {
+                    fail(nil)
                 }
             case .failure(let error as NSError):
                 fail(error)
@@ -65,9 +64,8 @@ class PokemonDetails {
         Alamofire.request(imageURL).validate().responseImage { response in
             switch response.result{
             case .success:
-                if let image = response.result.value {
-                    success(image)
-                }
+                guard let image = response.result.value else { fail(); return }
+                success(image)
             case .failure(_ as NSError):
                 fail()
             default:
