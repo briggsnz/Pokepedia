@@ -32,7 +32,7 @@ class PokemonDetails {
         let decodeJson = DecodeJson()
         
         // use Alamofire to download data
-        Alamofire.request(dataURLPass).responseJSON { response in
+        Alamofire.request(dataURLPass).validate().responseJSON { response in
             switch response.result{
                 
             // if successful decode and success callBack, else fail callBack
@@ -62,7 +62,7 @@ class PokemonDetails {
     static func downloadImage(imageURL: String, success: @escaping (UIImage) -> (), fail: @escaping () -> ()) {
 
         // use Alamofire to download data
-        Alamofire.request(imageURL).responseImage { response in
+        Alamofire.request(imageURL).validate().responseImage { response in
             switch response.result{
             case .success:
                 if let image = response.result.value {
