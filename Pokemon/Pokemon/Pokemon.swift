@@ -21,7 +21,6 @@ class Pokemon {
     ///
     /// - Parameter pokemonDictionary: dictionary containing 'name' and 'url' (see above)
     init(pokemonDictionary: [String:Any])  {
-        print(pokemonDictionary)
         self.name = pokemonDictionary["name"] as? String
         self.url = pokemonDictionary["url"] as? String
     }
