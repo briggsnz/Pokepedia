@@ -40,8 +40,5 @@ class PokeUITests: XCTestCase {
         let tablesQuery = app.tables
         tablesQuery.staticTexts["Charmeleon"].tap()
          XCTAssertTrue(app.staticTexts["Charmeleon"].exists, "Charmeleon field doesn't exist, wrong page")
-     
-        
     }
-    
 }

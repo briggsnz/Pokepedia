@@ -14,7 +14,6 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
-    var inSearchMode = false
     var pokemonGroup : [Pokemon]!
     var filterPokemonGroup : [Pokemon]!
 
@@ -31,6 +30,7 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         // Download from server, if server is unavailable for some reason then use local files
         Pokemon.downloadPokemonData(success: {newPokemonGroup in // successfully downloaded content
             self.pokemonGroup = newPokemonGroup
+            self.filterPokemonGroup = self.pokemonGroup
             self.tableView.reloadData()
         }, fail: {error in // error downloading so load local file
             let bundle = Bundle(for: Pokemon.self)
@@ -38,6 +38,7 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             // use local data instead
             Pokemon.useLocalData(bundle: bundle, success: {newPokemonGroup in
                 self.pokemonGroup = newPokemonGroup
+                self.filterPokemonGroup = self.pokemonGroup
                 self.tableView.reloadData()
                 
                 // Display an alert explaining that local values are being used
@@ -47,6 +48,8 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             })
             
         })
+        
+        filterPokemonGroup = pokemonGroup
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,13 +58,9 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     /// Sets number of rows in section
-    /// if inSearch mode == true then returns the number of rows in filtered list
+    /// Returns the count of filterPokemonGroup as this is always the group we are using
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if inSearchMode {
-            return filterPokemonGroup.count
-        } else {
-            return pokemonGroup.count
-        }
+        return filterPokemonGroup.count
     }
     
     /// configures cell
@@ -69,11 +68,7 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath)//UITableViewCell()
         
-        if inSearchMode {
-            cell.textLabel?.text = filterPokemonGroup[indexPath.row].name?.capitalized
-        } else {
-            cell.textLabel?.text = pokemonGroup[indexPath.row].name?.capitalized
-        }
+        cell.textLabel?.text = filterPokemonGroup[indexPath.row].name?.capitalized
         return cell
     }
 
@@ -85,19 +80,16 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     // if search bar is edited
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // no text - turn of editing mode
-        if searchBar.text == nil || searchBar.text == "" {
-            inSearchMode = false
-            tableView.reloadData()
-            view.endEditing(true)
-            
-        // text filter - results and reload
-        } else {
-            inSearchMode = true
-            let lower = searchBar.text!.lowercased()
-            filterPokemonGroup = pokemonGroup.filter({$0.name?.range(of: lower) != nil})
-            tableView.reloadData()
-        }
+        
+        // When there is no text, filterPokemonGroup is the same as pokemonGroup
+        // When user has entered text into the search box
+        // Use the filter method to iterate over all items in the data array
+        // For each item, return true if the item should be included and false if the
+        // item should NOT be included. Then we reload the data
+        let lower = searchBar.text!.lowercased()
+        filterPokemonGroup = searchText.isEmpty ? pokemonGroup : pokemonGroup.filter({$0.name?.range(of: lower) != nil})
+        tableView.reloadData()
+
     }
     
     // hide keyboard if scrolled
@@ -124,12 +116,7 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         // set values in pokemonDetailsVC storyboard
         if let destination = segue.destination as? pokemonDetailsVC {
             if let indexPath = tableView.indexPathForSelectedRow {
-                // do the work here
-                if inSearchMode {
-                    destination.pokemon = filterPokemonGroup[indexPath.row]
-                } else {
-                    destination.pokemon = pokemonGroup[indexPath.row]
-                }
+                destination.pokemon = filterPokemonGroup[indexPath.row]
             }
         }
     }
