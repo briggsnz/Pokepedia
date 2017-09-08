@@ -48,8 +48,6 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             })
             
         })
-        
-        filterPokemonGroup = pokemonGroup
     }
 
     override func didReceiveMemoryWarning() {
