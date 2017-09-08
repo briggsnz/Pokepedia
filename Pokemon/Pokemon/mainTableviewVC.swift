@@ -125,7 +125,11 @@ class mainTableviewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         if let destination = segue.destination as? pokemonDetailsVC {
             if let indexPath = tableView.indexPathForSelectedRow {
                 // do the work here
-               destination.pokemon = pokemonGroup[indexPath.row]
+                if inSearchMode {
+                    destination.pokemon = filterPokemonGroup[indexPath.row]
+                } else {
+                    destination.pokemon = pokemonGroup[indexPath.row]
+                }
             }
         }
     }

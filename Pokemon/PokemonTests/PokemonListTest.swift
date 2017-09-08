@@ -42,7 +42,6 @@ class testPokemonList: XCTestCase {
             
         }, fail: {error in
         })
-
         // Then
         XCTAssertEqual(pokemonGroup.count, 30)
     }
