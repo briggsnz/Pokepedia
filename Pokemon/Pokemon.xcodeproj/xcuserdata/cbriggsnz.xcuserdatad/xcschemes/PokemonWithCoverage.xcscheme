@@ -43,9 +43,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FBADD6071F5A15CA00692ED1"
-               BuildableName = "PokemonUITests.xctest"
-               BlueprintName = "PokemonUITests"
+               BlueprintIdentifier = "FB8253BC1F63439D004A243F"
+               BuildableName = "PokeUITests.xctest"
+               BlueprintName = "PokeUITests"
                ReferencedContainer = "container:Pokemon.xcodeproj">
             </BuildableReference>
          </TestableReference>
